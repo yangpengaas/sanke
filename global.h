@@ -8,8 +8,9 @@
 #include <QTime>
 #include <QTimer>
 #include <QMessageBox>
-const int Width = 10;
-const int High = 10;
+
+const int Width = 11;
+const int High = 11;
 //test123
 enum SnakeFrameStyle{
     Body,

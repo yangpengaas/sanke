@@ -23,7 +23,6 @@ public:
     void snakeMove(QPoint nextStep);
     int makeFood();
     void snakeGrow(QPoint newBody);
-    void main();
     ~MainWindow();
 
 

@@ -5,7 +5,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
-{
+{    qDebug() << "程序开始运行" << endl;
     ui->setupUi(this);
     //初始化随机数生成器
     QTime t;
@@ -34,13 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
     timer = new QTimer();
     QObject::connect(ui->startButton,SIGNAL(clicked()),this,SLOT(game()));
     QObject::connect(this->timer,SIGNAL(timeout()),this,SLOT(game()));
-    timer->start(200);
-}
-
-void MainWindow::main()
-{
+    timer->start(100);
 
 }
+
 
 void MainWindow::paintWorld()
 {
@@ -54,13 +51,13 @@ void MainWindow::snakeMove(QPoint nextStep)
 {
     world[snakeBody.last().x()][snakeBody.last().y()]->setFrameBody(SnakeFrameStyle::Empty);
 
-    qDebug() << "Fun:snakeMove:3" << endl;
+ //   qDebug() << "Fun:snakeMove:3" << endl;
     snakeBody.pop_back();
-    qDebug() << "Fun:snakeMove:start nextStepx:" << nextStep.x() << "y:"<< nextStep.y() << endl;
+//    qDebug() << "Fun:snakeMove:start nextStepx:" << nextStep.x() << "y:"<< nextStep.y() << endl;
     world[nextStep.x()][nextStep.y()]->setFrameBody(SnakeFrameStyle::Body);
-    qDebug() << "Fun:snakeMove:1" << endl;
+//    qDebug() << "Fun:snakeMove:1" << endl;
     snakeBody.push_front(nextStep);
-    qDebug() << "Fun:snakeMove:2" << endl;
+//    qDebug() << "Fun:snakeMove:2" << endl;
 
 
 }
@@ -90,7 +87,14 @@ int MainWindow::makeFood()
 void MainWindow::snakeGrow(QPoint newBody)
 {
     world[newBody.x()][newBody.y()]->setFrameBody(SnakeFrameStyle::Body);
-    snakeBody.push_front(newBody);
+    if(snakeBody.size() >=1000)
+    {
+        world[newBody.x()][newBody.y()]->setFrameBody(SnakeFrameStyle::Empty);
+    }
+    else
+    {
+        snakeBody.push_front(newBody);
+    }
 }
 void MainWindow::game()
 {
@@ -101,8 +105,18 @@ void MainWindow::game()
         QPoint nextStep = bfs.GetNextStep(world,snakeBody.first(),food);
         if(nextStep.x() == -1)//找不到蛇头与食物的可用路径，此时找寻蛇尾位置。
         {
-            nextStep = bfs.GetNextStep(world,snakeBody.first(),snakeBody.last());
-            qDebug() << "snake end find" << endl;
+            for(int i = 0;i < snakeBody.size();i++)
+            {
+                nextStep = bfs.GetNextStep(world,snakeBody.first(),snakeBody.at(i));
+                if(nextStep.x() != -1)
+                {
+                    break;
+                    qDebug() << "找到最接近尾的方块" << endl;
+                }
+                qDebug() << "寻找最接近尾的方块" << endl;
+            }
+
+
 
         }
         if(nextStep == food)
@@ -119,9 +133,9 @@ void MainWindow::game()
             this->close();
 
         }
-        qDebug() << "getNextStep:x:" << nextStep.x() << " y:" << nextStep.y() << endl;
+   //     qDebug() << "getNextStep:x:" << nextStep.x() << " y:" << nextStep.y() << endl;
         snakeMove(nextStep);
-        qDebug() << "snakeMove" << endl;
+   //     qDebug() << "snakeMove" << endl;
 
     }
 }

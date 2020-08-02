@@ -35,7 +35,7 @@ static availablePoint getAvailablePoint(bool world[Width][High],QPoint snakeHead
     {
         if(world[x][y] == false)//判断该点是否可用
         {
-
+            world[x][y] = true;
             avaPoint.avaliableDir.push_front(QPoint(x,y));
             avaPoint.count++;
         }
@@ -47,6 +47,7 @@ static availablePoint getAvailablePoint(bool world[Width][High],QPoint snakeHead
     {
         if(world[x][y] == false)//判断该点是否可用
         {
+            world[x][y] = true;
             avaPoint.avaliableDir.push_front(QPoint(x,y));
             avaPoint.count++;
         }
@@ -58,6 +59,7 @@ static availablePoint getAvailablePoint(bool world[Width][High],QPoint snakeHead
     {
         if(world[x][y] == false)//判断该点是否可用
         {
+            world[x][y] = true;
             avaPoint.avaliableDir.push_front(QPoint(x,y));
             avaPoint.count++;
         }
@@ -69,6 +71,7 @@ static availablePoint getAvailablePoint(bool world[Width][High],QPoint snakeHead
     {
         if(world[x][y] == false)//判断该点是否可用
         {
+            world[x][y] = true;
             avaPoint.avaliableDir.push_front(QPoint(x,y));
             avaPoint.count++;
         }
@@ -81,16 +84,6 @@ static availablePoint getAvailablePoint(bool world[Width][High],QPoint snakeHead
 //bfs寻路函数，分四个方向探索路径
 bool BFS::bfs(bool world[Width][High],QPoint snakeHead,QPoint aim)
 {
-    //debug
-//    for(int i=0;i<Width;i++)
-//    {
-//        for(int j=0;j<High;j++)
-//        {
-//            std::cout << world[i][j] << " ";
-//        }
-//        std::cout << std::endl;
-//    }
-
     //获取可用路径
     qDebug() << "BFS:bfs:aim x:" << aim.x() << " y:" << aim.y() << endl;
     availablePoint avaPoint;
@@ -131,13 +124,13 @@ bool BFS::bfs(bool world[Width][High],QPoint snakeHead,QPoint aim)
             return avaPoint.isSuccess;
         }
         world[temp.point.x()][temp.point.y()] = true;//
-//        qDebug() << "avaPoint.couty:" <<avaPoint.count << endl;
+        qDebug() << "avaPoint.couty:" <<avaPoint.count << endl;
         for(int i=0;i<avaPoint.count;i++)
         {
             mapArrCounter = mapArrCounter +1;
 //            qDebug() << "BFS:bfs:avapoint           x:" << avaPoint.avaliableDir.at(i).x() << " y:" << avaPoint.avaliableDir.at(i).y() << endl;
             mapArr[mapArrCounter].point = avaPoint.avaliableDir.at(i);
-//            qDebug() << "flag2" << endl;
+            qDebug() << "map counter:" << mapArrCounter << endl;
             mapArr[mapArrCounter].curNum = mapArrCounter;
             mapArr[mapArrCounter].perNum = temp.curNum;
 //            qDebug() << "flag3" << endl;
@@ -151,6 +144,7 @@ bool BFS::bfs(bool world[Width][High],QPoint snakeHead,QPoint aim)
 }
 QPoint BFS::GetNextStep(SnakeFrame* world[Width][High],QPoint snakeHead,QPoint aim)
 {
+    mapArrCounter = 0;
     //QPoint retPoint;
     bool tempWorld[Width][High];
     for(int i=0;i<Width;i++)
@@ -168,10 +162,11 @@ QPoint BFS::GetNextStep(SnakeFrame* world[Width][High],QPoint snakeHead,QPoint a
     {
         while(aimPoint.perNum != 0 )
         {
-            qDebug() << "aimPoint:curNum:" << aimPoint.curNum << endl;
+/*            qDebug() << "aimPoint:curNum:" << aimPoint.curNum << endl;
             qDebug() << "aimPoint.perNum:" << aimPoint.perNum << endl;
             qDebug() << "aimPoint.point.x:" << aimPoint.point.x() << endl;
             qDebug() << "aimPoint.point.y:" << aimPoint.point.y() << endl << endl;
+ */
             aimPoint = mapArr[aimPoint.perNum];
         }
     }

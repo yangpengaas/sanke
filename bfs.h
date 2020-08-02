@@ -10,7 +10,7 @@ class BFS
 {
 private:
 //    QPoint worldMap[Width*High];
-    pathQueue mapArr[Width*High*1000];//路径记录数组
+    pathQueue mapArr[Width*High*100];//路径记录数组
 //    QVector<pathQueue>mapArr;
     int mapArrCounter;
     QQueue<pathQueue> bfsQueue;//bfs 队列
